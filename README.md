@@ -9,9 +9,9 @@ A new Flutter project.
 
 2. Sebutkan seluruh widget yang kamu gunakan untuk menyelesaikan tugas ini dan jelaskan fungsinya masing-masing.
 * *Stateless widget* MyHomePage
-*Widget* bersifat *stateless* untuk menampilkan halaman menu.
+merupakan *widget* bersifat *stateless* untuk menampilkan halaman menu.
 * *Stateless widget* ShopCard
-*Widget* bersifat *stateless* untuk menampilkan *cards* sebagai tombol. *Widget* ini menampilkan informasi dari objek ShopItem. Ketika tombol ditekan, akan muncul *snackbar* dengan teks "Kamu telah menekan tombol &lt;atribut nama dari objek ShopItem&gt;
+merupakan *widget* bersifat *stateless* untuk menampilkan *cards* sebagai tombol. *Widget* ini menampilkan informasi dari objek ShopItem. Ketika tombol ditekan, akan muncul *snackbar* dengan teks "Kamu telah menekan tombol &lt;atribut nama dari objek ShopItem&gt;"
 
 3. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
     1. Buat proyek flutter baru dan masuk ke dalam direktorinya dengan menjalankan perintah berikut.
@@ -129,27 +129,27 @@ A new Flutter project.
     }
     }
     ```
-    **Penjelasan**
+    **Penjelasan**<br>
     Potongan kode diatas awalnya hanya berbeda di beberapa atribut string yang ditampilkan pada halaman menu, contohnya *title*. Setelah itu, untuk mengimplementasikan warna berbeda pada tiap tombol, *class ShopItem* ditambahkan atribut ```final MaterialColor color;``` dan parameter pada *constructor* untuk mengisi atribut tersebut. Pada pemanggilan *constructor* di *class MyHomePage*, tambahkan parameter untuk atribut warna. Setelah itu, ubah potongan kode berikut pada fungsi build di *class ShopCard*.
     ```dart
      @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.indigo,
-      ...
-    )
-  }
+      Widget build(BuildContext context) {
+        return Material(
+          color: Colors.indigo,
+          ...
+        )
+      }
     ```
     menjadi 
     ```dart
      @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      ...
-    )
-  }
-    ```
+      Widget build(BuildContext context) {
+        return Material(
+          color: item.color,
+          ...
+        )
+      }
+      ```
 
     3. Pada file main.dart, hapus seluruh kode dari baris ke-39 hingga akhir.
     4. Ubah baris ke-31 menjadi ```colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),``` dan baris ke-34 menjadi ```home: MyHomePage()```.
