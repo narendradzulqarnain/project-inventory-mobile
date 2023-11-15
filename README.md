@@ -9,9 +9,9 @@ A new Flutter project.
 
 2. Sebutkan seluruh widget yang kamu gunakan untuk menyelesaikan tugas ini dan jelaskan fungsinya masing-masing.
 * *Stateless widget* MyHomePage
-*Widget* bersifat *stateless* untuk menampilkan halaman menu.
+merupakan *widget* bersifat *stateless* untuk menampilkan halaman menu.
 * *Stateless widget* ShopCard
-*Widget* bersifat *stateless* untuk menampilkan *cards* sebagai tombol. *Widget* ini menampilkan informasi dari objek ShopItem. Ketika tombol ditekan, akan muncul *snackbar* dengan teks "Kamu telah menekan tombol &lt;atribut nama dari objek ShopItem&gt;
+merupakan *widget* bersifat *stateless* untuk menampilkan *cards* sebagai tombol. *Widget* ini menampilkan informasi dari objek ShopItem. Ketika tombol ditekan, akan muncul *snackbar* dengan teks "Kamu telah menekan tombol &lt;atribut nama dari objek ShopItem&gt;"
 
 3. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
     1. Buat proyek flutter baru dan masuk ke dalam direktorinya dengan menjalankan perintah berikut.
@@ -129,27 +129,27 @@ A new Flutter project.
     }
     }
     ```
-    **Penjelasan**
+    **Penjelasan**<br>
     Potongan kode diatas awalnya hanya berbeda di beberapa atribut string yang ditampilkan pada halaman menu, contohnya *title*. Setelah itu, untuk mengimplementasikan warna berbeda pada tiap tombol, *class ShopItem* ditambahkan atribut ```final MaterialColor color;``` dan parameter pada *constructor* untuk mengisi atribut tersebut. Pada pemanggilan *constructor* di *class MyHomePage*, tambahkan parameter untuk atribut warna. Setelah itu, ubah potongan kode berikut pada fungsi build di *class ShopCard*.
     ```dart
      @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.indigo,
-      ...
-    )
-  }
+      Widget build(BuildContext context) {
+        return Material(
+          color: Colors.indigo,
+          ...
+        )
+      }
     ```
     menjadi 
     ```dart
      @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      ...
-    )
-  }
-    ```
+      Widget build(BuildContext context) {
+        return Material(
+          color: item.color,
+          ...
+        )
+      }
+      ```
 
     3. Pada file main.dart, hapus seluruh kode dari baris ke-39 hingga akhir.
     4. Ubah baris ke-31 menjadi ```colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),``` dan baris ke-34 menjadi ```home: MyHomePage()```.
@@ -166,3 +166,275 @@ A new Flutter project.
     git commit -m "selesai tugas 7"
     git push -u origin main
     ```
+
+**TUGAS 8**
+
+1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
+push() akan menambahkan route baru diatas route yang sudah ada pada atas stack, sedangkan pushReplacement() menggantikan route yang sudah ada pada atas stack dengan route baru tersebut. Contoh penggunaan push() adalah tombol tambah item sedangkan contoh penggunaan pushReplacement() adalah tombol navigasi ke form tambah item pada *left drawer*
+
+2. Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
+* *Single-child layout widgets* - Layout yang hanya memiliki satu child. Digunakan ketika ingin membuat kontainer dengan satu child
+
+* *Multi-child layout widgets* - Layout yang dapat memiliki lebih dari satu children. Digunakan ketika ingin membuat kontainer dengan lebih dari satu child.
+
+* *Sliver widgets* - Widget untuk membuat layout yang *scrollable* dengan komponen berbasis *sliver*.
+
+3. Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
+
+* Form() - Sebagai wadah untuk *input field*
+* SingleChildScrollView() - Untuk membuat child widget di dalamnya menjadi *scrollable*
+* TextFormField() - *Input field*
+
+4. Bagaimana penerapan clean architecture pada aplikasi Flutter?
+Kode dipisah dan diorganisir sesuai dengan kegunaannya. Dalam flutter, penerapan *clean architecture* mengandung lapisan-lapisan seperti berikut.
+* Presentation Layer (UI) - Mengandung UI seperti komponen, widget, screens, dan views.
+* Domain Layer (Business Logic) - Mengandung logika bisnis dari aplikasi
+* Data Layer - Tempat mengambil dan menyimpan data
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
+* Buat file bernama left_drawer.dart dalam direktori widgets dan tambahkan kode berikut di dalamnya
+``` dart
+import 'package:flutter/material.dart';
+import 'package:project_inventory/screens/menu.dart';
+// TODO: Impor halaman ShopFormPage jika sudah dibuat
+import 'package:project_inventory/screens/itemlist_form.dart';
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.indigo,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Project Inventory',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Text("Inventory favorit",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                  ),
+                    
+                    ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+* Tambahkan *List tile* pada children untuk navigasi dengan menambahkan kode berikut di dalam list children
+``` dart
+ListTile(
+    leading: const Icon(Icons.home_outlined),
+    title: const Text('Halaman Utama'),
+    // Bagian redirection ke MyHomePage
+    onTap: () {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyHomePage(),
+        ));
+    },
+),
+ListTile(
+    leading: const Icon(Icons.add_shopping_cart),
+    title: const Text('Tambah Produk'),
+    // Bagian redirection ke ShopFormPage
+    onTap: () {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ShopFormPage(),
+        ));
+    },
+),
+```
+* Buat berkas baru bernama itemlist_form.dart pada direktori lib dan tambahkan kode berikut di dalamnya.
+``` dart
+import 'package:flutter/material.dart';
+import 'package:project_inventory/widgets/left_drawer.dart';
+class ShopFormPage extends StatefulWidget {
+    const ShopFormPage({super.key});
+
+    @override
+    State<ShopFormPage> createState() => _ShopFormPageState();
+}
+
+class _ShopFormPageState extends State<ShopFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = "";
+  int _amount = 0;
+  String _description = "";
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Center(
+              child: Text(
+                'Form Tambah Produk',
+              ),
+            ),
+            backgroundColor: Colors.indigo,
+            foregroundColor: Colors.white,
+          ),
+          drawer: const LeftDrawer(),
+          body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Name",
+                        labelText: "Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _name = value!;
+                        });
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return "Nama tidak boleh kosong!";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Amount",
+                        labelText: "Amount",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _amount = int.parse(value!);
+                        });
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return "Amount tidak boleh kosong!";
+                        }
+                        if (int.tryParse(value) == null) {
+                          return "Amount harus berupa angka!";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Description",
+                        labelText: "Description",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _description = value!;
+                        });
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return "Deskripsi tidak boleh kosong!";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.indigo),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Produk berhasil tersimpan'),
+                                  content: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Name: $_name'),
+                                        Text('Amount: $_amount'),
+                                        Text('Description: $_description'),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          _formKey.currentState!.reset();
+                          }
+                        },
+                        child: const Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]
+              ),
+            ),
+          ),
+        );
+    }
+}
+```
+* Pada widget ShopItem tambahkan kode berikut pada atribut onTap
+```dart
+// Navigate ke route yang sesuai (tergantung jenis tombol)
+if (item.name == "Tambah Item") {
+    Navigator.push(context,MaterialPageRoute(builder: (context) => const ShopFormPage()));
+}
+```
+* lakukan refactoring file seperti pada tutorial
