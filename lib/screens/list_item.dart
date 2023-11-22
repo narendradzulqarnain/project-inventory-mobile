@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:project_inventory/models/item.dart';
+import 'package:project_inventory/screens/item_detail.dart';
 
 
 import 'package:project_inventory/widgets/left_drawer.dart';
@@ -17,7 +18,7 @@ class _ProductPageState extends State<ProductPage> {
 Future<List<Item>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'http://localhost:8000/json/');
+        'https://narendra-dzulqarnain-tugas.pbp.cs.ui.ac.id/json/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -40,7 +41,7 @@ Future<List<Item>> fetchProduct() async {
 Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: const Text('Product'),
+        title: const Text('Item'),
         ),
         drawer: const LeftDrawer(),
         body: FutureBuilder(
@@ -53,7 +54,7 @@ Widget build(BuildContext context) {
                     return const Column(
                         children: [
                         Text(
-                            "Tidak ada data produk.",
+                            "Tidak ada data item.",
                             style:
                                 TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                         ),
@@ -63,7 +64,17 @@ Widget build(BuildContext context) {
                 } else {
                     return ListView.builder(
                         itemCount: snapshot.data!.length,
-                        itemBuilder: (_, index) => Container(
+                        itemBuilder: (_, index) => InkWell(
+                          onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ItemDetailPage(item: snapshot.data![index]),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 12),
                                 padding: const EdgeInsets.all(20.0),
@@ -82,10 +93,15 @@ Widget build(BuildContext context) {
                                     Text("${snapshot.data![index].fields.amount}"),
                                     const SizedBox(height: 10),
                                     Text(
-                                        "${snapshot.data![index].fields.description}")
+                                        "${snapshot.data![index].fields.description}"),
                                 ],
                                 ),
-                            ));
+                                
+                                
+                            ),
+                                )
+                        
+                        );
                     }
                 }
             }));
