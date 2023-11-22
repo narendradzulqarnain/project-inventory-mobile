@@ -438,3 +438,58 @@ if (item.name == "Tambah Item") {
 }
 ```
 * lakukan refactoring file seperti pada tutorial
+
+**TUGAS 9 (DEPLOYMENT BELUM BERHASIL)**
+
+1. Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+Ya, tetapi membuat model terlebih dahulu akan memberikan manfaat lebih dibandingkan tidak membuat model. *class* model memberikan keamanan tipe sehingga jika error terkait tipe data dapat ditangkap oleh compiler. Model juga membuat kode lebih terorganisir.
+
+2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+3. Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+Setelah mendapatkan data json, data dapat disimpan ke dalam variable menggunakan method jsonDecode. Setelah itu, data dapat diubah ke dalam bentuk model atau disimpan ke dalam variable. Untuk mengubah ke dalam bentuk model, kita dapat mengimplementasikan method fromJson. Selanjutnya, data sudah dapat diakses dalam bentuk objek dari model
+
+4. Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+Dari form login flutter akan dikirimkan request beserta data username dan password pada form ke bagian autentikasi aplikasi django. Request akan diproses oleh aplikasi django, lalu dikembalikan ke flutter. Jika autentikasi berhasil, maka user akan masuk ke halaman utama.
+
+5. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+- StatefulWidget LoginPage untuk menampilkan halaman login.
+- StatefulWidget ProductPage untuk menampilkan halaman list item
+
+6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+- Membuat django app bernama authentication
+- menambahkan app tersebut, corsheaders dan corsheaders.middleware.CorsMiddleware ke installed apps pada settings.py 
+- pip install django-cors-headers
+- tambahkan variable berikut di settings.py
+```
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+```
+- Buat fungsi login dan logout di authentication/views.py seperti di tutorial
+- Buat file urls.py di app authentication dan tambahkan path fungsi login dan logout
+- Tambahkan path untuk app authentication pada urls.py proyek
+- Install package flutter provider dan pbp_django_auth
+- Tambahkan cookierequest pada main.dart seperti di tutorial
+- Buat file login.dart di dalam screens dan isi file tersebut seperti di tutorial
+- Sesuaikan request urlnya
+- Buat folder baru di dalam lib bernama models, lalu buat file item.dart di dalamnya
+- Isi file tersebut dengan kode model yang di dapat dari QuickType seperti pada tutorial
+- flutter pub add http
+- Tambahkan potongan kode berikut pada android/app/src/main/AndroidManifest.xml
+```
+...
+    <application>
+    ...
+    </application>
+    <!-- Required to fetch data from the Internet. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+...
+```
+- Buat file list_item.dart di dalam screens, lalu isi file tersebut seperti di tutorial (sesuaikan url dan importnya)
+- Tambahkan kondisi untuk tombol lihat item dan logout pada shop_card.dart agar pindah halaman ketika di tekan seperti pada tutorial.
+- Buat fungsi untuk menambahkan item flutter di main/views.py dan tambahkan pathnya di urls.py seperti pada tutorial
+- Tambahkan CookieRequest pada itemlist_form.dart dan ubah fungsi onPressed seperti pada tutorial.
