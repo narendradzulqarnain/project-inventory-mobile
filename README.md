@@ -494,3 +494,95 @@ SESSION_COOKIE_SAMESITE = 'None'
 - Tambahkan kondisi untuk tombol lihat item dan logout pada shop_card.dart agar pindah halaman ketika di tekan seperti pada tutorial.
 - Buat fungsi untuk menambahkan item flutter di main/views.py dan tambahkan pathnya di urls.py seperti pada tutorial
 - Tambahkan CookieRequest pada itemlist_form.dart dan ubah fungsi onPressed seperti pada tutorial.
+- Buat file bernama item_detail.dart pada direktori screens
+- isi dengan kode berikut
+```dart
+class ItemDetailPage extends StatelessWidget {
+  final Item item;
+
+  // Constructor to receive item data
+  ItemDetailPage({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Item Detail'),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            // Display Item Name
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                item.fields.name,
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Text("${item.fields.amount}", style: TextStyle(fontSize: 16.0)),
+            // Display Item Description
+            Text(item.fields.description, style: TextStyle(fontSize: 16.0)),
+
+            // Add a button to go back to the list page
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                // Navigate back to the list page
+                Navigator.pop(context);
+              },
+              child: Text('Back'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+- Pada list_item.dart, ubah bagian ListView.builder menjadi seperti berikut
+```dart
+ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (_, index) => InkWell(
+                          onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ItemDetailPage(item: snapshot.data![index]),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    Text(
+                                    "${snapshot.data![index].fields.name}",
+                                    style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                    ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text("${snapshot.data![index].fields.amount}"),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                        "${snapshot.data![index].fields.description}"),
+                                ],
+                                ),
+                                
+                                
+                            ),
+                                )
+                        
+                        );
+```
