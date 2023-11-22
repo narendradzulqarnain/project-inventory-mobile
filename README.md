@@ -445,6 +445,7 @@ if (item.name == "Tambah Item") {
 Ya, tetapi membuat model terlebih dahulu akan memberikan manfaat lebih dibandingkan tidak membuat model. *class* model memberikan keamanan tipe sehingga jika error terkait tipe data dapat ditangkap oleh compiler. Model juga membuat kode lebih terorganisir.
 
 2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+Untuk membungkus InheritedWidget agar lebih mudah digunakan dan dapat digunakan kembali. CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter agar komponen lebih mudah digunakan dan dapat digunakan kembali
 
 3. Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
 Setelah mendapatkan data json, data dapat disimpan ke dalam variable menggunakan method jsonDecode. Setelah itu, data dapat diubah ke dalam bentuk model atau disimpan ke dalam variable. Untuk mengubah ke dalam bentuk model, kita dapat mengimplementasikan method fromJson. Selanjutnya, data sudah dapat diakses dalam bentuk objek dari model
